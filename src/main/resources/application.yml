@@ -1,0 +1,35 @@
+server:
+  port: 8091
+
+doorLock:
+     #程序加密密钥
+     lock-key: 8293D9D2D8D01FDC
+     #门锁webservice地址
+     lock-webservice: http://10.17.0.9:8080/eglc/ws/EGLockCloud?wsdl
+     #固定appId
+     lock-pkgId: 1
+spring:
+   datasource:
+      driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+      username: sa
+      password: 123
+      url: jdbc:sqlserver://10.17.0.9;DatabaseName=scm_main_zn
+      initialSize: 1
+      minIdle: 1
+      maxActive: 100
+      maxWait: 60000
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: SELECT 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: false
+      maxPoolPreparedStatementPerConnectionSize: 0
+
+mybatis:
+   mapper-locations: classpath:mybatis/mapper/*.xml
+   config-location: classpath:mybatis/mybatis-config.xml
+
+logging:
+   config: classpath:log4j2.xml

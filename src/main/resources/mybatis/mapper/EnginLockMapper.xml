@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weds.doorlock.mapper.EnginLockMapper">
+  <resultMap id="BaseResultMap" type="com.weds.doorlock.entity.EnginLock">
+    <id column="xh" jdbcType="INTEGER" property="xh" />
+    <result column="lock_addr" jdbcType="INTEGER" property="lockAddr" />
+    <result column="lock_location" jdbcType="VARCHAR" property="lockLocation" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xh, lock_addr, lock_location
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from engin_lock
+    where xh = #{xh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from engin_lock
+    where xh = #{xh,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.weds.doorlock.entity.EnginLock">
+    insert into engin_lock (xh, lock_addr, lock_location
+      )
+    values (#{xh,jdbcType=INTEGER}, #{lockAddr,jdbcType=INTEGER}, #{lockLocation,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.weds.doorlock.entity.EnginLock">
+    insert into engin_lock
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="xh != null">
+        xh,
+      </if>
+      <if test="lockAddr != null">
+        lock_addr,
+      </if>
+      <if test="lockLocation != null">
+        lock_location,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="xh != null">
+        #{xh,jdbcType=INTEGER},
+      </if>
+      <if test="lockAddr != null">
+        #{lockAddr,jdbcType=INTEGER},
+      </if>
+      <if test="lockLocation != null">
+        #{lockLocation,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.weds.doorlock.entity.EnginLock">
+    update engin_lock
+    <set>
+      <if test="lockAddr != null">
+        lock_addr = #{lockAddr,jdbcType=INTEGER},
+      </if>
+      <if test="lockLocation != null">
+        lock_location = #{lockLocation,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.weds.doorlock.entity.EnginLock">
+    update engin_lock
+    set lock_addr = #{lockAddr,jdbcType=INTEGER},
+      lock_location = #{lockLocation,jdbcType=VARCHAR}
+    where xh = #{xh,jdbcType=INTEGER}
+  </update>
+
+  <update id="addDoorLockLs" parameterType="com.weds.doorlock.entity.LockAddrEntity">
+    <foreach collection="ls" item="item" separator=";">
+      Update engin_lock
+      set lock_location = #{item.location},zh = #{zh}
+      where lock_addr = #{item.addr};
+      Insert into engin_lock(lock_addr,lock_location,zh)
+      select #{item.addr}, #{item.location},#{zh}
+      where #{item.addr} not in (select lock_addr from engin_lock)
+    </foreach>
+  </update>
+</mapper>

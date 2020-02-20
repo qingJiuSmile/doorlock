@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.weds.doorlock.mapper.EnginLockUserMapper">
+  <resultMap id="BaseResultMap" type="com.weds.doorlock.entity.EnginLockUser">
+    <id column="xh" jdbcType="INTEGER" property="xh" />
+    <result column="zh" jdbcType="VARCHAR" property="zh" />
+    <result column="pw" jdbcType="VARCHAR" property="pw" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    xh, zh, pw
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from engin_lock_user
+    where xh = #{xh,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from engin_lock_user
+    where xh = #{xh,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.weds.doorlock.entity.EnginLockUser">
+    insert into engin_lock_user (xh, zh, pw)
+    values (#{xh,jdbcType=INTEGER}, #{zh,jdbcType=VARCHAR}, #{pw,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.weds.doorlock.entity.EnginLockUser">
+    insert into engin_lock_user
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="xh != null">
+        xh,
+      </if>
+      <if test="zh != null">
+        zh,
+      </if>
+      <if test="pw != null">
+        pw,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="xh != null">
+        #{xh,jdbcType=INTEGER},
+      </if>
+      <if test="zh != null">
+        #{zh,jdbcType=VARCHAR},
+      </if>
+      <if test="pw != null">
+        #{pw,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.weds.doorlock.entity.EnginLockUser">
+    update engin_lock_user
+    <set>
+      <if test="zh != null">
+        zh = #{zh,jdbcType=VARCHAR},
+      </if>
+      <if test="pw != null">
+        pw = #{pw,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where xh = #{xh,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.weds.doorlock.entity.EnginLockUser">
+    update engin_lock_user
+    set zh = #{zh,jdbcType=VARCHAR},
+      pw = #{pw,jdbcType=VARCHAR}
+    where xh = #{xh,jdbcType=INTEGER}
+  </update>
+
+  <select id="getLockUserAll" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/>
+    from  engin_lock_user
+  </select>
+</mapper>
